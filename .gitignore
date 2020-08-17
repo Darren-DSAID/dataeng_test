@@ -1,0 +1,14 @@
+**/.DS_Store
+.vscode
+**/__pycache__
+*.sqlite3
+temp/
+env/
+.env
+dist/
+conf/
+models/
+datacopy/
+dataprocessed/
+app/static/openapi.yml
+**/.ipynb_checkpoints
