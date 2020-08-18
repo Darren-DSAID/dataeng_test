@@ -63,71 +63,27 @@ default_args = {
 }
 
 dag = DAG(
-    'APIcall',
+    'dataPipline',
     default_args=default_args,
-    description='Download audios from file',
+    description='process data per required',
     schedule_interval=timedelta(days=1),
     catchup=False,
     max_active_runs=1
     #schedule_interval=None,
 )
 
-# t1, t2 and t3 are examples of tasks created by instantiating operators
-def sleep(seconds,**kwargs):
-    time.sleep(seconds)
-def change_to_home(**kwargs):
-    os.chdir(os.getenv("HOME"))
-    current_path=os.getcwd()
-    logging.info("now i am at directory: "+current_path)
-def run_API_call(**kwargs):
 
-    subprocess.run("./audio2text")
-
-
-rootFolder=Variable.get("rootFolder")
-downloadFileName =Variable.get("downloadFileName")
+# scriptFolder=Variable.get("scriptFolder")
+# dataFolder =Variable.get("dataFolder")
 templated_command = """
-docker run -v {{var.value.rootFolder}}:/app --env function_file=APImove.py --env input_folder=data/cut_output --env obs_folder=data/API_input post_download_process
+docker run -v {{var.value.scriptFolder}}:/app -v {{var.value.dataFolder}}:/data --env function_file=processFile.py --env data_folder=/data  govdata
 """
 t1 = BashOperator(
-    task_id='APImove',
+    task_id='ProcessData',
     bash_command=templated_command,
     dag=dag,
 )
 
 
-templated_command = """
-docker run -v {{var.value.rootFolder}}:/app --env function_file=callAPI.py post_download_process
-"""
-t3=BashOperator(
-    task_id="APIcall",
-    bash_command=templated_command,
-    dag=dag
-
-)
-
-templated_command = """
-docker run -v {{var.value.rootFolder}}:/app --env function_file=post_upload_to_obs.py --env input_folder=data/API_input --env obs_folder=processed/pending-verification post_download_process
-
-
-"""
-t4=BashOperator(
-    task_id="Post_APIcall_upload",
-    bash_command=templated_command,
-    dag=dag
-
-)
-templated_command = """
-docker run -v {{var.value.rootFolder}}:/app --env function_file=callAPI_rework.py post_download_process
-
-
-"""
-t5=BashOperator(
-    task_id="call_API_rework",
-    bash_command=templated_command,
-    dag=dag
-
-)
-
-dag >> t1 >> t3>> t4 >> t5
+dag >> t1
 

@@ -33,20 +33,13 @@ Processing tasks:
 ### Solution introduction
 This is mainly using Airflow to do the scheduling daily process job.
 
-Airflow is started as a seperate service by docker-compose.
-
-`cd <airflow folder>`
-`docker-compose up`
-
-- The mounted dag folder in docker-compose file is where you can maintain DAGS. currently it is in `./airflow/dags`
-
-- Three folders created for this process under `airflow/data`
-    1. `pre_processed`: where pre-processed data located
+- Four folders created for this process under local_data folder
+    1. `pre_processed`: where pre-processed data located(original existing folder)
 	2. `result`: where post-processed data located
 	3. `errors`: where error data located
 	4. `processed`: where original processed data located
-- under `.airflow/dags/`, there is a `variables.json`, you can use it to config the variables to be uploaded to airflow. the `scriptFolder` is the <em>absolute path</em> to your scripts, `dataFolder` is the <em>absolute path</em> to your scripts
-- build an image for running scripts using docker as an python environment
+
+- build an image for running scripts using docker as a python environment
     - cd to `dataProcessScript` folder
 	- run ` docker build -t govdata .` to build the image
 	- take note:
@@ -55,7 +48,16 @@ Airflow is started as a seperate service by docker-compose.
 
 		`docker run  -v path-to-local-data-folder:/data -v path-to-local-script-folder:/app --env data_folder=/data  --env function_file=processFile.py govdata`
 
+Airflow is started as a seperate service by docker-compose.
 
+`cd <airflow folder>`
+`docker-compose up`
+
+- The mounted dag folder in docker-compose file is where you can maintain DAGS. currently it is in `./airflow/dags` without stop airflow service.
+
+-  `variables.json`, you can use it to config the variables to be uploaded to airflow after the service is up. the `scriptFolder` is the <em>absolute path</em> to your scripts, `dataFolder` is the <em>absolute path</em> to your scripts
+
+- access airflow service at port 8080. under `Admin`->`varialbe` upload `variables.json` file
 Data process
 
 

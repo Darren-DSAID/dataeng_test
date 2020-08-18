@@ -12,3 +12,4 @@ datacopy/
 dataprocessed/
 app/static/openapi.yml
 **/.ipynb_checkpoints
+/data
