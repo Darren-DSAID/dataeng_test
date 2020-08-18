@@ -39,13 +39,21 @@ Airflow is started as a seperate service by docker-compose.
 `docker-compose up`
 
 - The mounted dag folder in docker-compose file is where you can maintain DAGS. currently it is in `./airflow/dags`
-- The mounted data folder in docker-compose file is where you can maintain your preprocessed data, postprocessed data and failed data `.airflow/data`
+
 - Three folders created for this process under `airflow/data`
     1. `pre_processed`: where pre-processed data located
 	2. `result`: where post-processed data located
 	3. `errors`: where error data located
 	4. `processed`: where original processed data located
-- under `.airflow/dags/`, there is a `variables.json`, you can use it to config the variables to be uploaded to airflow. the `rootFolder` is the <em>absolute path</em> to your scripts
+- under `.airflow/dags/`, there is a `variables.json`, you can use it to config the variables to be uploaded to airflow. the `scriptFolder` is the <em>absolute path</em> to your scripts, `dataFolder` is the <em>absolute path</em> to your scripts
+- build an image for running scripts using docker as an python environment
+    - cd to `dataProcessScript` folder
+	- run ` docker build -t govdata .` to build the image
+	- take note:
+	    1. the script file name is passed to `docker run` in airflow data pipline as an environement variable. so that one docker image can run different python scripts
+		2. for local testing of `docker run` purpose, you can mount your script folder to `/app` folder and data folder to `/data` folder to docker and specify `data_folder` environment variable to `/data`. Make sure to put your data inside `local_data_folder/pre_processed` folder. Docker run example is as below
+
+		`docker run  -v path-to-local-data-folder:/data -v path-to-local-script-folder:/app --env data_folder=/data  --env function_file=processFile.py govdata`
 
 
 Data process
