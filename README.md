@@ -86,6 +86,13 @@ Each sale transaction contains the following information:
 
 Set up a PostgreSQL database using the base `docker` image [here](https://hub.docker.com/_/postgres) given the above. We expect at least a `Dockerfile` which will stand up your database with the DDL statements to create the necessary tables. Produce entity-relationship diagrams as necessary to illustrate your design.
 
+### Solution
+`cd <database folder>` and run `docker-compose up`
+
+the design is in `entity-relationship.xls`
+
+the initial script is in `db-script`
+
 ## Section 3: System Design
 You are designing data infrastructure on the cloud for a company whose main business is in processing images.
 
