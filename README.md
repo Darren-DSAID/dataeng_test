@@ -1,6 +1,7 @@
+
 # DSAID Data Engineering Technical Test
 
-This test is split into 3 sections, **data pipelines**, **databases** and **system design**. 
+This test is split into 3 sections, **data pipelines**, **databases** and **system design**.
 
 ## Submission Guidelines
 Please create a Github repository containing your submission and send us an email containing a link to the repository.
@@ -29,9 +30,30 @@ Processing tasks:
 - Create a new field named `above_100`, which is `true` if the price is strictly greater than 100
 
 *Note: please submit the processed dataset too.*
+### Solution introduction
+This is mainly using Airflow to do the scheduling daily process job.
+
+Airflow is started as a seperate service by docker-compose.
+
+`cd <airflow folder>`
+`docker-compose up`
+
+- The mounted dag folder in docker-compose file is where you can maintain DAGS. currently it is in `./airflow/dags`
+- The mounted data folder in docker-compose file is where you can maintain your preprocessed data, postprocessed data and failed data `.airflow/data`
+- Three folders created for this process under `airflow/data`
+    1. `pre_processed`: where pre-processed data located
+	2. `result`: where post-processed data located
+	3. `errors`: where error data located
+	4. `processed`: where original processed data located
+- under `.airflow/dags/`, there is a `variables.json`, you can use it to config the variables to be uploaded to airflow. the `rootFolder` is the <em>absolute path</em> to your scripts
+
+
+Data process
+
+
 
 ## Section 2: Databases
-You are appointed by a car dealership to create their database infrastructure. There is only one store. In each business day, cars are being sold by a team of salespersons. Each transaction would contain information on the date and time of transaction, customer transacted with, and the car that was sold. 
+You are appointed by a car dealership to create their database infrastructure. There is only one store. In each business day, cars are being sold by a team of salespersons. Each transaction would contain information on the date and time of transaction, customer transacted with, and the car that was sold.
 
 The following are known:
 - Both used and new cars are sold.
@@ -55,7 +77,7 @@ Each sale transaction contains the following information:
 Set up a PostgreSQL database using the base `docker` image [here](https://hub.docker.com/_/postgres) given the above. We expect at least a `Dockerfile` which will stand up your database with the DDL statements to create the necessary tables. Produce entity-relationship diagrams as necessary to illustrate your design.
 
 ## Section 3: System Design
-You are designing data infrastructure on the cloud for a company whose main business is in processing images. 
+You are designing data infrastructure on the cloud for a company whose main business is in processing images.
 
 The company has a web application which collects images uploaded by customers. The company also has a separate web application which provides a stream of images using a Kafka stream. The company’s software engineers have already some code written to process the images. The company  would like to save processed images for a minimum of 7 days for archival purposes. Ideally, the company would also want to be able to have some Business Intelligence (BI) on key statistics including number and type of images processed, and by which customers.
 
