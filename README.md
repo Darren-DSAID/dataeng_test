@@ -87,7 +87,7 @@ Each sale transaction contains the following information:
 Set up a PostgreSQL database using the base `docker` image [here](https://hub.docker.com/_/postgres) given the above. We expect at least a `Dockerfile` which will stand up your database with the DDL statements to create the necessary tables. Produce entity-relationship diagrams as necessary to illustrate your design.
 
 ### Solution
-`cd <database folder>` and run `docker-compose up`
+`cd database` and run `docker-compose up`
 
 the design is in `entity-relationship.xls`
 
@@ -99,5 +99,8 @@ You are designing data infrastructure on the cloud for a company whose main busi
 The company has a web application which collects images uploaded by customers. The company also has a separate web application which provides a stream of images using a Kafka stream. The company’s software engineers have already some code written to process the images. The company  would like to save processed images for a minimum of 7 days for archival purposes. Ideally, the company would also want to be able to have some Business Intelligence (BI) on key statistics including number and type of images processed, and by which customers.
 
 Produce a system architecture diagram (e.g. Visio, Powerpoint) using any of the commercial cloud providers' ecosystem to explain your design. Please also indicate clearly if you have made any assumptions at any point.
+
+### Solution
+`cd system-design`
 
 
